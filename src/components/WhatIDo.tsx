@@ -1,31 +1,38 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import "./styles/WhatIDo.css";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const WhatIDo = () => {
   const containerRef = useRef<(HTMLDivElement | null)[]>([]);
-  const setRef = (el: HTMLDivElement | null, index: number) => {
-    containerRef.current[index] = el;
-  };
-  useEffect(() => {
-    if (ScrollTrigger.isTouch) {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.classList.remove("what-noTouch");
-          container.addEventListener("click", () => handleClick(container));
+
+  const handleClick = (index: number) => {
+    const current = containerRef.current[index];
+
+    if (!current) return;
+
+    const isActive = current.classList.contains("what-content-active");
+
+    // reset all
+    containerRef.current.forEach((el) => {
+      if (el) {
+        el.classList.remove("what-content-active", "what-sibling");
+      }
+    });
+
+    // toggle only if not already active
+    if (!isActive) {
+      current.classList.add("what-content-active");
+
+      containerRef.current.forEach((el, i) => {
+        if (el && i !== index) {
+          el.classList.add("what-sibling");
         }
       });
     }
-    return () => {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.removeEventListener("click", () => handleClick(container));
-        }
-      });
-    };
-  }, []);
+  };
+
   return (
     <div className="whatIDO">
+      {/* TITLE */}
       <div className="what-box">
         <h2 className="title">
           W<span className="hat-h2">HAT</span>
@@ -34,120 +41,70 @@ const WhatIDo = () => {
           </div>
         </h2>
       </div>
+
+      {/* CONTENT */}
       <div className="what-box">
         <div className="what-box-in">
-          <div className="what-border2">
-            <svg width="100%">
-              <line
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="100%"
-                stroke="white"
-                strokeWidth="2"
-                strokeDasharray="7,7"
-              />
-              <line
-                x1="100%"
-                y1="0"
-                x2="100%"
-                y2="100%"
-                stroke="white"
-                strokeWidth="2"
-                strokeDasharray="7,7"
-              />
-            </svg>
-          </div>
-          <div
-            className="what-content what-noTouch"
-            ref={(el) => setRef(el, 0)}
-          >
-            <div className="what-border1">
-              <svg height="100%">
-                <line
-                  x1="0"
-                  y1="0"
-                  x2="100%"
-                  y2="0"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeDasharray="6,6"
-                />
-                <line
-                  x1="0"
-                  y1="100%"
-                  x2="100%"
-                  y2="100%"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeDasharray="6,6"
-                />
-              </svg>
-            </div>
-            <div className="what-corner"></div>
 
+          {/* FRONTEND */}
+          <div
+            className="what-content"
+            ref={(el) => (containerRef.current[0] = el)}
+            onClick={() => handleClick(0)}
+          >
             <div className="what-content-in">
-              <h3>DEVELOP</h3>
-              <h4>Description</h4>
+              <h3>FRONTEND</h3>
+              <h4>What I Do</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                quia aliquid laboriosam ducimus sit molestiae.
+                I build responsive, fast, and interactive user interfaces using
+                modern frontend technologies. My focus is on performance,
+                scalability, and clean UI/UX to deliver seamless user
+                experiences.
               </p>
-              <h5>Skillset & tools</h5>
+
+              <h5>Tech Stack</h5>
               <div className="what-content-flex">
+                <div className="what-tags">React</div>
+                <div className="what-tags">Next.js</div>
+                <div className="what-tags">Vue</div>
                 <div className="what-tags">JavaScript</div>
                 <div className="what-tags">TypeScript</div>
-                <div className="what-tags">Three.js</div>
-                <div className="what-tags">React</div>
-                <div className="what-tags">Css</div>
-                <div className="what-tags">Node.js</div>
-                <div className="what-tags">Next.js</div>
-                <div className="what-tags">Express.js</div>
-                <div className="what-tags">PHP</div>
-                <div className="what-tags">MySql</div>
+                <div className="what-tags">HTML</div>
+                <div className="what-tags">CSS</div>
+                <div className="what-tags">GSAP</div>
               </div>
-              <div className="what-arrow"></div>
             </div>
           </div>
+
+          {/* BACKEND */}
           <div
-            className="what-content what-noTouch"
-            ref={(el) => setRef(el, 1)}
+            className="what-content"
+            ref={(el) => (containerRef.current[1] = el)}
+            onClick={() => handleClick(1)}
           >
-            <div className="what-border1">
-              <svg height="100%">
-                <line
-                  x1="0"
-                  y1="100%"
-                  x2="100%"
-                  y2="100%"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeDasharray="6,6"
-                />
-              </svg>
-            </div>
-            <div className="what-corner"></div>
             <div className="what-content-in">
-              <h3>DESIGN</h3>
-              <h4>Description</h4>
+              <h3>BACKEND</h3>
+              <h4>What I Do</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                quia aliquid laboriosam ducimus sit molestiae
+                I develop secure and scalable backend systems, design REST APIs,
+                and manage databases. I focus on efficient server-side logic and
+                seamless integration with frontend applications.
               </p>
-              <h5>Skillset & tools</h5>
+
+              <h5>Tech Stack</h5>
               <div className="what-content-flex">
-                <div className="what-tags">Blender</div>
-                <div className="what-tags">Zbrush</div>
-                <div className="what-tags">UI Design</div>
-                <div className="what-tags">Motion</div>
-                <div className="what-tags">Rigging</div>
-                <div className="what-tags">3D Animation</div>
-                <div className="what-tags">Character Design</div>
-                <div className="what-tags">Modelling</div>
+                <div className="what-tags">Django</div>
+                <div className="what-tags">REST API</div>
+                <div className="what-tags">PostgreSQL</div>
+                <div className="what-tags">Node.js</div>
+                <div className="what-tags">Express.js</div>
+                <div className="what-tags">Docker</div>
+                <div className="what-tags">GitHub</div>
+                <div className="what-tags">DigitalOcean</div>
               </div>
-              <div className="what-arrow"></div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -155,18 +112,3 @@ const WhatIDo = () => {
 };
 
 export default WhatIDo;
-
-function handleClick(container: HTMLDivElement) {
-  container.classList.toggle("what-content-active");
-  container.classList.remove("what-sibling");
-  if (container.parentElement) {
-    const siblings = Array.from(container.parentElement.children);
-
-    siblings.forEach((sibling) => {
-      if (sibling !== container) {
-        sibling.classList.remove("what-content-active");
-        sibling.classList.toggle("what-sibling");
-      }
-    });
-  }
-}
